@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 
-project("testproject")
+project("doublependulum")
 
 add_executable(${PROJECT_NAME}
   "main.cpp"
+  "constaints.h"
+  "doublependulum.h"
+  "doublependulum.cpp"
   ${IMGUI_SOURCES}
 )
 

@@ -32,7 +32,7 @@ set(BUILD_SHARED_LIBS false)
 FetchContent_Declare(
   sfml
   GIT_REPOSITORY https://github.com/SFML/SFML.git
-  GIT_TAG        master
+  GIT_TAG        2.5.1
 )
 
 FetchContent_GetProperties(sfml)
