@@ -30,8 +30,7 @@ private:
   float angular_acc1, angular_acc2;
   float angular_vel1, angular_vel2;
   float mass1, mass2;
-  float pos_x1, pos_x2;
-  float pos_y1, pos_y2;
+  sf::Vector2f position1, position2;
   bool hold = false;
   bool moving1 = false;
   bool moving2 = false;

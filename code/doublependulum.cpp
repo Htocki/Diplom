@@ -79,11 +79,11 @@ void DoublePendulum::Update() {
 
 void DoublePendulum::Render() {
   sf::Vector2f end_pos1 = sf::Vector2f(
-    pos_x1*100 + rod_vertices[0].position.x,
-    pos_y1*100 + rod_vertices[0].position.y);
+    position1.x*100 + rod_vertices[0].position.x,
+    position1.y*100 + rod_vertices[0].position.y);
   sf::Vector2f end_pos2 = sf::Vector2f(
-    pos_x2*100 + rod_vertices[0].position.x,
-    pos_y2*100 + rod_vertices[0].position.y);
+    position2.x*100 + rod_vertices[0].position.x,
+    position2.y*100 + rod_vertices[0].position.y);
 
   rod_vertices[1].position = end_pos1;
   rod_vertices[2].position = end_pos2;
@@ -115,27 +115,30 @@ void DoublePendulum::Render() {
   std::system("clear");
   std::cout
     << "Bob1" << std::endl
-    << "  Acceleration 1: " << angular_acc1 << std::endl
-    << "  Velocity 1: " << angular_vel1 << std::endl
-    << "  Angle 1: " << angle1 << std::endl
+    << "  Acceleration: " << angular_acc1 << std::endl
+    << "  Velocity: " << angular_vel1 << std::endl
+    << "  Angle: " << angle1 << std::endl
+    << std::endl
     << "Bob2" << std::endl
-    << "  Acceleration 2: " << angular_acc2 << std::endl
-    << "  Velocity 2: " << angular_vel2 << std::endl
-    << "  Angle 2: " << angle2 << std::endl
+    << "  Acceleration: " << angular_acc2 << std::endl
+    << "  Velocity: " << angular_vel2 << std::endl
+    << "  Angle: " << angle2 << std::endl
     << std::endl;
 }
 
 void DoublePendulum::UpdateXY() {
-  pos_x1 = length1*std::sin(angle1);
-  pos_y1 = length1*std::cos(angle1);
-  pos_x2 = pos_x1 + length2*std::sin(angle2);
-  pos_y2 = pos_y1 + length2*std::cos(angle2);
+  position1.x = length1*std::sin(angle1);
+  position1.y = length1*std::cos(angle1);
+  position2.x = position1.x + length2*std::sin(angle2);
+  position2.y = position1.y + length2*std::cos(angle2);
 }
 
-int DoublePendulum::BobClicked(sf::Vector2i mousepos) {
-  if (bob1.getGlobalBounds().contains(sf::Vector2f(mousepos.x, mousepos.y)))
+int DoublePendulum::BobClicked(sf::Vector2i mouse_position) {
+  if (bob1.getGlobalBounds().contains(
+      sf::Vector2f(mouse_position.x, mouse_position.y)))
     return 1;
-  else if (bob2.getGlobalBounds().contains(sf::Vector2f(mousepos.x, mousepos.y)))
+  else if (bob2.getGlobalBounds().contains(
+           sf::Vector2f(mouse_position.x, mouse_position.y)))
     return 2;
   else
     return 0;
