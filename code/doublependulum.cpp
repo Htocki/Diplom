@@ -5,17 +5,17 @@ DoublePendulum::DoublePendulum(
   float mass1, float mass2,
   float angle1, float angle2)
 {
-  this->length1 = length1;
-  this->length2 = length2;
-  this->mass1 = mass1;
-  this->mass2 = mass2;
-  this->angle1 = angle1;
-  this->angle2 = angle2;
+  bob1.length = length1;
+  bob1.mass = mass1;
+  bob1.angle = angle1;
+  bob1.acceleration = 0;
+  bob1.velocity = 0;
 
-  angular_acc1 = 0;
-  angular_acc2 = 0;
-  angular_vel1 = 0;
-  angular_vel2 = 0;
+  bob2.length = length2;
+  bob2.mass = mass2;
+  bob2.angle = angle2;
+  bob2.acceleration = 0;
+  bob2.velocity = 0;
 }
 
 void DoublePendulum::SetupRenderObjects(float width, float height) {
@@ -30,13 +30,11 @@ void DoublePendulum::SetupRenderObjects(float width, float height) {
     rod_vertices[i].color = sf::Color::Black;
   }
 
-  bob1.setRadius(mass1);
-  bob1.setOrigin(sf::Vector2f(bob1.getRadius(), bob1.getRadius()));
-  bob1.setFillColor(sf::Color::Black);
+  bob1.SetRadius(bob1.mass);
+  bob1.SetFillColor(sf::Color::Black);
 
-  bob2.setRadius(mass2);
-  bob2.setOrigin(sf::Vector2f(bob2.getRadius(), bob2.getRadius()));
-  bob2.setFillColor(sf::Color::Black);
+  bob2.SetRadius(bob2.mass);
+  bob2.SetFillColor(sf::Color::Black);
 }
 
 void DoublePendulum::ChangeState() {
@@ -50,47 +48,50 @@ void DoublePendulum::RodVisibility() {
 void DoublePendulum::Update() {
   if (hold) return;
   
-  float n11 = -GRAVITY*(2*mass1 + mass2)*std::sin(angle1);
-  float n12 = -mass2*GRAVITY*std::sin(angle1 - 2*angle2);
-  float n13 = -2*std::sin(angle1 - angle2) * mass2;
-  float n14 =
-    angular_vel2*angular_vel2*length2 +
-    angular_vel1*angular_vel1*length1*std::cos(angle1 - angle2);
-  float den = 2*mass1 + mass2 - mass2*std::cos(2*angle1 - 2*angle2);
-  float n21 = 2*std::sin(angle1 - angle2);
-  float n22 = angular_vel1*angular_vel1*length1*(mass1 + mass2);
-  float n23 = GRAVITY*(mass1 + mass2)*std::cos(angle1);
-  float n24 = angular_vel2*angular_vel2*length2*mass2*std::cos(angle1 - angle2);
+  float n11 = -GRAVITY*(2*bob1.mass + bob2.mass)*std::sin(bob1.angle);
+  float n12 = -bob2.mass*GRAVITY*std::sin(bob1.angle - 2*bob2.angle);
+  float n13 = -2*std::sin(bob1.angle - bob2.angle) * bob2.mass;
+  float n14 = bob2.velocity*bob2.velocity*bob2.length +
+    bob1.velocity*bob1.velocity*bob1.length*std::cos(bob1.angle - bob2.angle);
+  
+  float n21 = 2*std::sin(bob1.angle - bob2.angle);
+  float n22 = bob1.velocity*bob1.velocity*bob1.length*(bob1.mass + bob2.mass);
+  float n23 = GRAVITY*(bob1.mass + bob2.mass)*std::cos(bob1.angle);
+  float n24 = bob2.velocity*bob2.velocity*bob2.length*bob2.mass*
+    std::cos(bob1.angle - bob2.angle);
+  
+  float den = 2*bob1.mass + bob2.mass - bob2.mass*std::cos(2*bob1.angle -
+    2*bob2.angle);
 
-  angular_acc1 = (n11 + n12 + n13*n14)/(length1*den*FPS*FPS);
-  angular_acc2 = (n21*(n22 + n23 + n24))/(length2*den*FPS*FPS);
+  bob1.acceleration = (n11 + n12 + n13*n14)/(bob1.length*den*FPS*FPS);
+  bob2.acceleration = (n21*(n22 + n23 + n24))/(bob2.length*den*FPS*FPS);
 
-  angular_vel1 += angular_acc1;
-  angular_vel2 += angular_acc2;
+  bob1.velocity += bob1.acceleration;
+  bob2.velocity += bob2.acceleration;
 
-  angle1 += angular_vel1;
-  angle2 += angular_vel2;
+  bob1.angle += bob1.velocity;
+  bob2.angle += bob2.velocity;
 
   UpdateXY();
 
-  angular_vel1 *= DAMP1;
-  angular_vel2 *= DAMP2;
+  bob1.velocity *= DAMP1;
+  bob2.velocity *= DAMP2;
 }
 
 void DoublePendulum::Render() {
   sf::Vector2f end_pos1 = sf::Vector2f(
-    position1.x*100 + rod_vertices[0].position.x,
-    position1.y*100 + rod_vertices[0].position.y);
+    bob1.GetPosition().x*100 + rod_vertices[0].position.x,
+    bob1.GetPosition().y*100 + rod_vertices[0].position.y);
   sf::Vector2f end_pos2 = sf::Vector2f(
-    position2.x*100 + rod_vertices[0].position.x,
-    position2.y*100 + rod_vertices[0].position.y);
+    bob2.GetPosition().x*100 + rod_vertices[0].position.x,
+    bob2.GetPosition().y*100 + rod_vertices[0].position.y);
 
   rod_vertices[1].position = end_pos1;
   rod_vertices[2].position = end_pos2;
   vb.update(rod_vertices);
 
-  bob1.setPosition(end_pos1);
-  bob2.setPosition(end_pos2);
+  bob1.SetPosition(end_pos1);
+  bob2.SetPosition(end_pos2);
 
   //Trails
   int s = trails.size();
@@ -115,62 +116,51 @@ void DoublePendulum::Render() {
   std::system("clear");
   std::cout
     << "Bob1" << std::endl
-    << "  Acceleration: " << angular_acc1 << std::endl
-    << "  Velocity: " << angular_vel1 << std::endl
-    << "  Angle: " << angle1 << std::endl
+    << "  Acceleration: " << bob1.acceleration << std::endl
+    << "  Velocity: " << bob1.velocity << std::endl
+    << "  Angle: " << bob1.angle << std::endl
     << std::endl
     << "Bob2" << std::endl
-    << "  Acceleration: " << angular_acc2 << std::endl
-    << "  Velocity: " << angular_vel2 << std::endl
-    << "  Angle: " << angle2 << std::endl
+    << "  Acceleration: " << bob2.acceleration << std::endl
+    << "  Velocity: " << bob2.velocity << std::endl
+    << "  Angle: " << bob2.angle << std::endl
     << std::endl;
 }
 
 void DoublePendulum::UpdateXY() {
-  position1.x = length1*std::sin(angle1);
-  position1.y = length1*std::cos(angle1);
-  position2.x = position1.x + length2*std::sin(angle2);
-  position2.y = position1.y + length2*std::cos(angle2);
-}
-
-int DoublePendulum::BobClicked(sf::Vector2i mouse_position) {
-  if (bob1.getGlobalBounds().contains(
-      sf::Vector2f(mouse_position.x, mouse_position.y)))
-    return 1;
-  else if (bob2.getGlobalBounds().contains(
-           sf::Vector2f(mouse_position.x, mouse_position.y)))
-    return 2;
-  else
-    return 0;
+  bob1.SetPosition(sf::Vector2f(
+    bob1.length*std::sin(bob1.angle),
+    bob1.length*std::cos(bob1.angle)));
+  bob2.SetPosition(sf::Vector2f(
+    bob1.GetPosition().x + bob2.length*std::sin(bob2.angle),
+    bob1.GetPosition().y + bob2.length*std::cos(bob2.angle)));
 }
 
 void DoublePendulum::Clicked(sf::Vector2i mouse_position) {
-  int id = BobClicked(mouse_position);
-  if (id == 0) return;
-  hold = true;
-  if (id == 1) moving1 = !moving1;
-  if (id == 2) moving2 = !moving2;
+  if (bob1.IsClicked(mouse_position)) { moving1 = !moving1; }
+  else if (bob2.IsClicked(mouse_position)) { moving2 = !moving2; }
+  else { hold = true; }
 }
 
+namespace {
+void MoveBob(Bob& bob, const sf::Vector2f& del) {
+  bob.angle = std::atan(del.x / del.y);
+  if (del.y < 0) { bob.angle += PI; }
+  bob.length = std::sqrt(del.x*del.x + del.y*del.y)/100;
+}
+} // namespace
+
 void DoublePendulum::MoveBob(sf::Vector2i mouse_position) {
-  if (!moving1 && !moving2) return;
-  float x = mouse_position.x;
-  float y = mouse_position.y;
   if (moving1) {
-    float delx = x - rod_vertices[0].position.x;
-    float dely = y - rod_vertices[0].position.y;
-    angle1 = std::atan(delx / dely);
-    if (dely < 0) angle1 += PI;
-    length1 = std::sqrt(delx*delx + dely*dely)/100;
-  }
-  if (moving2) {
-    float delx = x - rod_vertices[1].position.x;
-    float dely = y - rod_vertices[1].position.y;
-    angle2 = std::atan(delx / dely);
-    if (dely < 0) angle2 += PI;
-      length2 = std::sqrt(delx*delx + dely*dely)/100;
-  }
-  angular_vel1 = 0;
-  angular_vel2 = 0;
+    ::MoveBob(bob1, sf::Vector2f(
+      mouse_position.x - rod_vertices[0].position.x,
+      mouse_position.y - rod_vertices[0].position.y));
+  } else if (moving2) {
+    ::MoveBob(bob1, sf::Vector2f(
+      mouse_position.x - rod_vertices[1].position.x,
+      mouse_position.y - rod_vertices[1].position.y));
+  } else { return; }
+  bob1.velocity = 0;
+  bob2.velocity = 0;
   UpdateXY();
 }

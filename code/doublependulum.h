@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "constaints.h"
+#include "bob.h"
 
 class DoublePendulum : public sf::Sprite {
 public:
@@ -24,13 +25,9 @@ public:
   void RodVisibility();
 
 private:
+  Bob bob1, bob2;
+
   // Params defining the state of pendulum
-  float angle1, angle2;
-  float length1, length2;
-  float angular_acc1, angular_acc2;
-  float angular_vel1, angular_vel2;
-  float mass1, mass2;
-  sf::Vector2f position1, position2;
   bool hold = false;
   bool moving1 = false;
   bool moving2 = false;
@@ -40,10 +37,8 @@ private:
   sf::RenderTexture texture;
   sf::Vertex rod_vertices[3];
   sf::VertexBuffer vb;
-  sf::CircleShape bob1, bob2;
   std::vector<sf::Vertex> trails;
 
   // Functions
   void UpdateXY();
-  int BobClicked(sf::Vector2i mouse_position);
 };
