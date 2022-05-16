@@ -8,16 +8,14 @@ DoublePendulum::DoublePendulum(
   bob1.length = length1;
   bob1.mass = mass1;
   bob1.angle = angle1;
-  bob1.acceleration = 0;
-  bob1.velocity = 0;
+  bob1.damp = 1.f;
   bob1.SetRadius(bob1.mass);
   bob1.SetFillColor(sf::Color::Black);
 
   bob2.length = length2;
   bob2.mass = mass2;
   bob2.angle = angle2;
-  bob2.acceleration = 0;
-  bob2.velocity = 0;
+  bob2.damp = 1.f;
   bob2.SetRadius(bob2.mass);
   bob2.SetFillColor(sf::Color::Black);
 }
@@ -43,15 +41,15 @@ void DoublePendulum::RodVisibility() {
 void DoublePendulum::Update() {
   if (hold) return;
   
-  float n11 = -GRAVITY*(2*bob1.mass + bob2.mass)*std::sin(bob1.angle);
-  float n12 = -bob2.mass*GRAVITY*std::sin(bob1.angle - 2*bob2.angle);
+  float n11 = -gravity*(2*bob1.mass + bob2.mass)*std::sin(bob1.angle);
+  float n12 = -bob2.mass*gravity*std::sin(bob1.angle - 2*bob2.angle);
   float n13 = -2*std::sin(bob1.angle - bob2.angle) * bob2.mass;
   float n14 = bob2.velocity*bob2.velocity*bob2.length +
     bob1.velocity*bob1.velocity*bob1.length*std::cos(bob1.angle - bob2.angle);
   
   float n21 = 2*std::sin(bob1.angle - bob2.angle);
   float n22 = bob1.velocity*bob1.velocity*bob1.length*(bob1.mass + bob2.mass);
-  float n23 = GRAVITY*(bob1.mass + bob2.mass)*std::cos(bob1.angle);
+  float n23 = gravity*(bob1.mass + bob2.mass)*std::cos(bob1.angle);
   float n24 = bob2.velocity*bob2.velocity*bob2.length*bob2.mass*
     std::cos(bob1.angle - bob2.angle);
   
@@ -64,8 +62,8 @@ void DoublePendulum::Update() {
   bob2.velocity += bob2.acceleration;
   bob1.angle += bob1.velocity;
   bob2.angle += bob2.velocity;
-  bob1.velocity *= DAMP1;
-  bob2.velocity *= DAMP2;
+  bob1.velocity *= bob1.damp;
+  bob2.velocity *= bob2.damp;
   
   UpdatePositions();
   UpdateRod();
@@ -86,13 +84,13 @@ void DoublePendulum::UpdateBobs() {
 }
 
 void DoublePendulum::UpdateTrails(const sf::Vector2f& position) {
-  size_t current_size = trails.size();
+  int current_size = static_cast<int>(trails.size());
   if (current_size  < required_size) {
     trails.push_back(sf::Vertex(
       position,
       sf::Color(0, 255, 200, (current_size + 1)*255/required_size)));
   } else {
-    for (size_t i { 0 }; i < current_size - 1; i++) {
+    for (int i { 0 }; i < current_size - 1; i++) {
       trails[i].position = trails[i + 1].position;
     }
     trails[current_size - 1].position = position;
@@ -136,7 +134,6 @@ void DoublePendulum::UpdatePositions() {
 void DoublePendulum::Clicked(sf::Vector2i mouse_position) {
   if (bob1.IsClicked(mouse_position)) { moving1 = !moving1; }
   if (bob2.IsClicked(mouse_position)) { moving2 = !moving2; }
-  hold = true;
 }
 
 namespace {

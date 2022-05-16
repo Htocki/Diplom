@@ -23,9 +23,16 @@ public:
   void Clicked(sf::Vector2i mouse_position);
   void RodVisibility();
 
+  float* Gravity() { return &gravity; }
+  float* Bob1Damp() { return bob1.Damp(); }
+  float* Bob2Damp() { return bob2.Damp(); }
+  int* Bob1TrailSize() { return &required_size; }
+  int* Bob2TrailSize() { return &required_size; }
+
 private:
   Bob bob1, bob2;
-  size_t required_size { 300 };
+  int required_size { 300 };
+  float gravity { 9.8 };
   sf::Vector2f pos1, pos2;
   sf::Vector2f end_pos1, end_pos2;
 

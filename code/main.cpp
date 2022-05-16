@@ -51,13 +51,17 @@ int main() {
     }
   
     pendulum.Update();
-
     ImGui::SFML::Update(window, deltaClock.restart());
+    
     ImGui::Begin("Controller");
-      ImGui::SliderFloat("Gravity", &GRAVITY, 0.0f, 20.0f);
-      ImGui::SliderFloat("Damp1", &DAMP1, 0.0f, 1.0f);
-      ImGui::SliderFloat("Damp2", &DAMP2, 0.0f, 1.0f);
-      ImGui::SliderInt("Trailsize", &TRAILSIZE, 0, 500);
+      ImGui::Text("Pendulum");
+      ImGui::SliderFloat("Gravity", pendulum.Gravity(), 0.0f, 20.0f);
+      ImGui::Text("Bob1");
+      ImGui::SliderFloat("Damp", pendulum.Bob1Damp(), 0.0f, 1.0f);
+      ImGui::SliderInt("Trail size", pendulum.Bob1TrailSize(), 0, 500);
+      ImGui::Text("Bob2");
+      ImGui::SliderFloat("Damp2", pendulum.Bob2Damp(), 0.0f, 1.0f);
+      ImGui::SliderInt("Trailsize", pendulum.Bob2TrailSize(), 0, 500);
     ImGui::End();
 
     window.clear(sf::Color::White);
