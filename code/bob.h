@@ -7,23 +7,27 @@
 class Bob : public sf::Drawable {
 public:
   float angle { 0.f };
-  float length { 0.f };
   float acceleration { 0.f };  // angular acceleration 
   float velocity { 0.f };  // angular velocity
-  float mass { 0.f };
-  float damp { 0.f };
-
-  void SetRadius(float radius);
+ 
+  void SetDamp(float damp);
   void SetFillColor(const sf::Color& color);
-  void SetPosition(const sf::Vector2f& position);
-  const sf::Vector2f& GetPosition() const;
+  void SetLength(float length);
+  void SetMass(float mass);
+  void SetPosition(const sf::Vector2f& position); 
+
+  float GetDamp() const { return damp; }
+  float GetLength() const { return length; }
+  float GetMass() const { return mass; } 
+  const sf::Vector2f& GetPosition() const { return circle.getPosition(); }
+  
   bool IsClicked(const sf::Vector2i& position);
 
-  float* Length() { return &length; }
-  float* Mass() { return &mass; }
-  float* Damp() { return &damp; }
-
 private:
-  sf::CircleShape m_circle;
+  sf::CircleShape circle;
+  float damp { 0.f };
+  float length { 0.f };
+  float mass { 0.f }; 
+
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

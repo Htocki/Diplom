@@ -23,18 +23,29 @@ public:
   void Clicked(sf::Vector2i mouse_position);
   void RodVisibility();
 
-  // All
-  float* Gravity() { return &gravity; }
+  void SetGravity(float gravity) { this->gravity = gravity; }
   // First bob
-  float* Bob1Length() { return bob1.Length(); }
-  float* Bob1Mass() { return bob1.Mass(); }
-  float* Bob1Damp() { return bob1.Damp(); }
-  int* Bob1TrailSize() { return &required_size; }
+  void SetBob1Length(float length) { bob1.SetLength(length); }
+  void SetBob1Mass(float mass) { bob1.SetMass(mass); }
+  void SetBob1Damp(float damp) { bob1.SetDamp(damp); }
+  void SetBob1TrailSize(int trail_size) { required_size = trail_size; }
   // Second bob
-  float* Bob2Length() { return bob2.Length(); }
-  float* Bob2Mass() { return bob2.Mass(); }
-  float* Bob2Damp() { return bob2.Damp(); }
-  int* Bob2TrailSize() { return &required_size; }
+  void SetBob2Length(float length) { bob2.SetLength(length); }
+  void SetBob2Mass(float mass) { bob2.SetMass(mass); }
+  void SetBob2Damp(float damp) { bob2.SetDamp(damp); }
+  void SetBob2TrailSize(int trail_size) { required_size = trail_size; }
+
+  float GetGravity() const { return gravity; }
+  // First bob
+  float GetBob1Length() const { return bob1.GetLength(); }
+  float GetBob1Mass() const { return bob1.GetMass(); }
+  float GetBob1Damp() const { return bob1.GetDamp(); }
+  int GetBob1TrailSize() const { return required_size; }
+  // Second bob
+  float GetBob2Length() const { return bob2.GetLength(); }
+  float GetBob2Mass() const { return bob2.GetMass(); }
+  float GetBob2Damp() const { return bob2.GetDamp(); }
+  int GetBob2TrailSize() const { return required_size; }
 
 private:
   Bob bob1, bob2;
