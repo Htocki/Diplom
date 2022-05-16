@@ -26,6 +26,8 @@ public:
 private:
   Bob bob1, bob2;
   size_t required_size { 300 };
+  sf::Vector2f pos1, pos2;
+  sf::Vector2f end_pos1, end_pos2;
 
   // Params defining the state of pendulum
   bool hold = false;
@@ -39,8 +41,9 @@ private:
   std::vector<sf::Vertex> trails;
 
   // Functions
-  void Render();
-  void UpdateXY();
+  void UpdatePositions();
+  void UpdateRod();
+  void UpdateBobs();
   void UpdateTrails(const sf::Vector2f& position);
   void PrintInfo();
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -20,7 +20,6 @@ DoublePendulum::DoublePendulum(
   bob2.velocity = 0;
   bob2.SetRadius(bob2.mass);
   bob2.SetFillColor(sf::Color::Black);
-
 }
 
 void DoublePendulum::SetupRenderObjects(float width, float height) {
@@ -61,19 +60,29 @@ void DoublePendulum::Update() {
 
   bob1.acceleration = (n11 + n12 + n13*n14)/(bob1.length*den*FPS*FPS);
   bob2.acceleration = (n21*(n22 + n23 + n24))/(bob2.length*den*FPS*FPS);
-
   bob1.velocity += bob1.acceleration;
   bob2.velocity += bob2.acceleration;
-
   bob1.angle += bob1.velocity;
   bob2.angle += bob2.velocity;
-
-  UpdateXY();
-
   bob1.velocity *= DAMP1;
   bob2.velocity *= DAMP2;
+  
+  UpdatePositions();
+  UpdateRod();
+  UpdateBobs();
+  UpdateTrails(end_pos2);
+  PrintInfo();
+}
 
-  Render();
+void DoublePendulum::UpdateRod() {
+  rod_vertices[1].position = end_pos1;
+  rod_vertices[2].position = end_pos2;
+  vb.update(rod_vertices);
+}
+
+void DoublePendulum::UpdateBobs() {
+  bob1.SetPosition(end_pos1);
+  bob2.SetPosition(end_pos2);
 }
 
 void DoublePendulum::UpdateTrails(const sf::Vector2f& position) {
@@ -88,25 +97,6 @@ void DoublePendulum::UpdateTrails(const sf::Vector2f& position) {
     }
     trails[current_size - 1].position = position;
   } 
-}
-
-void DoublePendulum::Render() {
-  sf::Vector2f end_pos1 = sf::Vector2f(
-    bob1.GetPosition().x*100 + rod_vertices[0].position.x,
-    bob1.GetPosition().y*100 + rod_vertices[0].position.y);
-  sf::Vector2f end_pos2 = sf::Vector2f(
-    bob2.GetPosition().x*100 + rod_vertices[0].position.x,
-    bob2.GetPosition().y*100 + rod_vertices[0].position.y);
-
-  rod_vertices[1].position = end_pos1;
-  rod_vertices[2].position = end_pos2;
-  vb.update(rod_vertices);
-
-  bob1.SetPosition(end_pos1);
-  bob2.SetPosition(end_pos2);
-
-  UpdateTrails(end_pos2);
-  PrintInfo();
 }
 
 void DoublePendulum::PrintInfo() {
@@ -131,13 +121,16 @@ void DoublePendulum::draw(sf::RenderTarget& target, sf::RenderStates states) con
   target.draw(&trails[0], trails.size(), sf::LineStrip);
 }
 
-void DoublePendulum::UpdateXY() {
-  bob1.SetPosition(sf::Vector2f(
-    bob1.length*std::sin(bob1.angle),
-    bob1.length*std::cos(bob1.angle)));
-  bob2.SetPosition(sf::Vector2f(
-    bob1.GetPosition().x + bob2.length*std::sin(bob2.angle),
-    bob1.GetPosition().y + bob2.length*std::cos(bob2.angle)));
+void DoublePendulum::UpdatePositions() {
+  pos1.x = bob1.length*std::sin(bob1.angle);
+  pos1.y = bob1.length*std::cos(bob1.angle); 
+  pos2.x = pos1.x + bob2.length*std::sin(bob2.angle);
+  pos2.y = pos1.y + bob2.length*std::cos(bob2.angle);
+  
+  end_pos1.x = pos1.x*100 + rod_vertices[0].position.x;
+  end_pos1.y = pos1.y*100 + rod_vertices[0].position.y;
+  end_pos2.x = pos2.x*100 + rod_vertices[0].position.x;
+  end_pos2.y = pos2.y*100 + rod_vertices[0].position.y;
 }
 
 void DoublePendulum::Clicked(sf::Vector2i mouse_position) {
@@ -166,5 +159,5 @@ void DoublePendulum::MoveBob(sf::Vector2i mouse_position) {
   } else { return; }
   bob1.velocity = 0;
   bob2.velocity = 0;
-  UpdateXY();
+  UpdatePositions();
 }
