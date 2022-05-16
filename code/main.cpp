@@ -19,15 +19,15 @@ int main() {
   DoublePendulum pendulum(1, 0.8, 10, 4, 90*PI/180, 90*PI/180);
   pendulum.SetupRenderObjects(WIDTH, HEIGHT);
 
-  float gravity = pendulum.GetGravity();
-  float bob1_length = pendulum.GetBob1Length();
-  float bob1_mass = pendulum.GetBob1Mass();
-  float bob1_damp = pendulum.GetBob1Damp();
-  int bob1_trailsize = pendulum.GetBob1TrailSize();
-  float bob2_length = pendulum.GetBob2Length();
-  float bob2_mass = pendulum.GetBob2Mass();
-  float bob2_damp = pendulum.GetBob2Damp();
-  int bob2_trailsize = pendulum.GetBob2TrailSize();
+  float gravity { pendulum.GetGravity() };
+  float bob1_length { pendulum.GetBob1Length() };
+  float bob1_mass { pendulum.GetBob1Mass() };
+  float bob1_damp { pendulum.GetBob1Damp() };
+  int bob1_trailsize { pendulum.GetBob1TrailSize() };
+  float bob2_length { pendulum.GetBob2Length() };
+  float bob2_mass { pendulum.GetBob2Mass() };
+  float bob2_damp { pendulum.GetBob2Damp() };
+  int bob2_trailsize { pendulum.GetBob2TrailSize() };
 
   while (window.isOpen()) {
     sf::Event event;
@@ -59,6 +59,16 @@ int main() {
   
     pendulum.Update();
     ImGui::SFML::Update(window, deltaClock.restart());
+
+  gravity = pendulum.GetGravity();
+  bob1_length = pendulum.GetBob1Length();
+  bob1_mass = pendulum.GetBob1Mass();
+  bob1_damp = pendulum.GetBob1Damp();
+  bob1_trailsize = pendulum.GetBob1TrailSize();
+  bob2_length = pendulum.GetBob2Length();
+  bob2_mass = pendulum.GetBob2Mass();
+  bob2_damp = pendulum.GetBob2Damp();
+  bob2_trailsize = pendulum.GetBob2TrailSize();
     
     ImGui::Begin("Settings");
       ImGui::SliderFloat("Gravity", &gravity, 0.1f, 20.0f);
