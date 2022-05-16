@@ -18,7 +18,6 @@ public:
 
   void SetupRenderObjects(float width, float height);
   void Update();
-  void Render();
   void ChangeState();
   void MoveBob(sf::Vector2i mouse_position);
   void Clicked(sf::Vector2i mouse_position);
@@ -26,6 +25,7 @@ public:
 
 private:
   Bob bob1, bob2;
+  size_t required_size { 300 };
 
   // Params defining the state of pendulum
   bool hold = false;
@@ -39,7 +39,9 @@ private:
   std::vector<sf::Vertex> trails;
 
   // Functions
+  void Render();
   void UpdateXY();
+  void UpdateTrails(const sf::Vector2f& position);
   void PrintInfo();
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

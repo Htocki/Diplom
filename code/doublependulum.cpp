@@ -73,7 +73,21 @@ void DoublePendulum::Update() {
   bob1.velocity *= DAMP1;
   bob2.velocity *= DAMP2;
 
-  PrintInfo();
+  Render();
+}
+
+void DoublePendulum::UpdateTrails(const sf::Vector2f& position) {
+  size_t current_size = trails.size();
+  if (current_size  < required_size) {
+    trails.push_back(sf::Vertex(
+      position,
+      sf::Color(0, 255, 200, (current_size + 1)*255/required_size)));
+  } else {
+    for (size_t i { 0 }; i < current_size - 1; i++) {
+      trails[i].position = trails[i + 1].position;
+    }
+    trails[current_size - 1].position = position;
+  } 
 }
 
 void DoublePendulum::Render() {
@@ -91,18 +105,8 @@ void DoublePendulum::Render() {
   bob1.SetPosition(end_pos1);
   bob2.SetPosition(end_pos2);
 
-  //Trails
-  int s = trails.size();
-  if (s < TRAILSIZE){
-    trails.push_back(sf::Vertex(
-      end_pos2,
-      sf::Color(0, 255, 200, (s + 1)*255/TRAILSIZE)));
-  } else {
-    for (int i = 0; i < s - 1; i++){
-      trails[i].position = trails[i + 1].position;
-    }
-    trails[s - 1].position = end_pos2;
-  }
+  UpdateTrails(end_pos2);
+  PrintInfo();
 }
 
 void DoublePendulum::PrintInfo() {

@@ -51,7 +51,6 @@ int main() {
     }
   
     pendulum.Update();
-    pendulum.Render();
 
     ImGui::SFML::Update(window, deltaClock.restart());
     ImGui::Begin("Controller");
