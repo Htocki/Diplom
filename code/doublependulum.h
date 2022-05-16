@@ -40,5 +40,6 @@ private:
 
   // Functions
   void UpdateXY();
+  void PrintInfo();
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

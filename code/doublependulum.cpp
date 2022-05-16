@@ -72,6 +72,8 @@ void DoublePendulum::Update() {
 
   bob1.velocity *= DAMP1;
   bob2.velocity *= DAMP2;
+
+  PrintInfo();
 }
 
 void DoublePendulum::Render() {
@@ -101,7 +103,9 @@ void DoublePendulum::Render() {
     }
     trails[s - 1].position = end_pos2;
   }
+}
 
+void DoublePendulum::PrintInfo() {
   std::system("clear");
   std::cout
     << "Bob1" << std::endl
