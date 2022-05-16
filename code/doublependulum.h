@@ -9,7 +9,7 @@
 #include "constaints.h"
 #include "bob.h"
 
-class DoublePendulum : public sf::Sprite {
+class DoublePendulum : public sf::Drawable {
 public:
   DoublePendulum(
     float length1, float length2,
@@ -34,11 +34,11 @@ private:
   bool show_rod = true;
 
   // Render objects
-  sf::RenderTexture texture;
   sf::Vertex rod_vertices[3];
   sf::VertexBuffer vb;
   std::vector<sf::Vertex> trails;
 
   // Functions
   void UpdateXY();
+  virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

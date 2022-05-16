@@ -10,18 +10,20 @@ DoublePendulum::DoublePendulum(
   bob1.angle = angle1;
   bob1.acceleration = 0;
   bob1.velocity = 0;
+  bob1.SetRadius(bob1.mass);
+  bob1.SetFillColor(sf::Color::Black);
 
   bob2.length = length2;
   bob2.mass = mass2;
   bob2.angle = angle2;
   bob2.acceleration = 0;
   bob2.velocity = 0;
+  bob2.SetRadius(bob2.mass);
+  bob2.SetFillColor(sf::Color::Black);
+
 }
 
 void DoublePendulum::SetupRenderObjects(float width, float height) {
-  texture.create(width, height);
-  this->setTexture(texture.getTexture());
-
   vb.create(3);
   vb.setPrimitiveType(sf::LineStrip);
 
@@ -29,12 +31,6 @@ void DoublePendulum::SetupRenderObjects(float width, float height) {
   for (int i = 0; i < 3; i++) {
     rod_vertices[i].color = sf::Color::Black;
   }
-
-  bob1.SetRadius(bob1.mass);
-  bob1.SetFillColor(sf::Color::Black);
-
-  bob2.SetRadius(bob2.mass);
-  bob2.SetFillColor(sf::Color::Black);
 }
 
 void DoublePendulum::ChangeState() {
@@ -106,13 +102,6 @@ void DoublePendulum::Render() {
     trails[s - 1].position = end_pos2;
   }
 
-  texture.clear(sf::Color::White);
-  if (show_rod) texture.draw(vb);
-  texture.draw(bob1);
-  texture.draw(bob2);
-  texture.draw(&trails[0], trails.size(), sf::LineStrip);
-  texture.display();
-
   std::system("clear");
   std::cout
     << "Bob1" << std::endl
@@ -127,6 +116,13 @@ void DoublePendulum::Render() {
     << std::endl;
 }
 
+void DoublePendulum::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+  if (show_rod) { target.draw(vb, states); }
+  target.draw(bob1);
+  target.draw(bob2);
+  target.draw(&trails[0], trails.size(), sf::LineStrip);
+}
+
 void DoublePendulum::UpdateXY() {
   bob1.SetPosition(sf::Vector2f(
     bob1.length*std::sin(bob1.angle),
@@ -138,8 +134,8 @@ void DoublePendulum::UpdateXY() {
 
 void DoublePendulum::Clicked(sf::Vector2i mouse_position) {
   if (bob1.IsClicked(mouse_position)) { moving1 = !moving1; }
-  else if (bob2.IsClicked(mouse_position)) { moving2 = !moving2; }
-  else { hold = true; }
+  if (bob2.IsClicked(mouse_position)) { moving2 = !moving2; }
+  hold = true;
 }
 
 namespace {
