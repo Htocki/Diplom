@@ -23,10 +23,17 @@ public:
   void Clicked(sf::Vector2i mouse_position);
   void RodVisibility();
 
+  // All
   float* Gravity() { return &gravity; }
+  // First bob
+  float* Bob1Length() { return bob1.Length(); }
+  float* Bob1Mass() { return bob1.Mass(); }
   float* Bob1Damp() { return bob1.Damp(); }
-  float* Bob2Damp() { return bob2.Damp(); }
   int* Bob1TrailSize() { return &required_size; }
+  // Second bob
+  float* Bob2Length() { return bob2.Length(); }
+  float* Bob2Mass() { return bob2.Mass(); }
+  float* Bob2Damp() { return bob2.Damp(); }
   int* Bob2TrailSize() { return &required_size; }
 
 private:

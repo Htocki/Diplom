@@ -24,7 +24,7 @@ void DoublePendulum::SetupRenderObjects(float width, float height) {
   vb.create(3);
   vb.setPrimitiveType(sf::LineStrip);
 
-  rod_vertices[0].position = sf::Vector2f(width/2, height/2);
+  rod_vertices[0].position = sf::Vector2f(width/2 + 150, height/2 - 40);
   for (int i = 0; i < 3; i++) {
     rod_vertices[i].color = sf::Color::Black;
   }
@@ -85,10 +85,14 @@ void DoublePendulum::UpdateBobs() {
 
 void DoublePendulum::UpdateTrails(const sf::Vector2f& position) {
   int current_size = static_cast<int>(trails.size());
-  if (current_size  < required_size) {
-    trails.push_back(sf::Vertex(
-      position,
-      sf::Color(0, 255, 200, (current_size + 1)*255/required_size)));
+  if (current_size < required_size) {
+    trails.push_back(sf::Vertex(position, sf::Color::Green));
+  } else if (current_size > required_size) {
+    for (int i { 0 }; i < current_size - 1; i++) {
+      trails[i].position = trails[i + 1].position;
+    }
+    trails[current_size - 1].position = position;
+    trails.erase(trails.begin());
   } else {
     for (int i { 0 }; i < current_size - 1; i++) {
       trails[i].position = trails[i + 1].position;
@@ -114,9 +118,9 @@ void DoublePendulum::PrintInfo() {
 
 void DoublePendulum::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   if (show_rod) { target.draw(vb, states); }
+  target.draw(&trails[0], trails.size(), sf::LineStrip);
   target.draw(bob1);
   target.draw(bob2);
-  target.draw(&trails[0], trails.size(), sf::LineStrip);
 }
 
 void DoublePendulum::UpdatePositions() {

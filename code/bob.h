@@ -19,6 +19,8 @@ public:
   const sf::Vector2f& GetPosition() const;
   bool IsClicked(const sf::Vector2i& position);
 
+  float* Length() { return &length; }
+  float* Mass() { return &mass; }
   float* Damp() { return &damp; }
 
 private:
