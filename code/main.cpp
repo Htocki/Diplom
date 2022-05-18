@@ -37,6 +37,8 @@ int main() {
   pendulum.SetupRenderObjects(WIDTH, HEIGHT);
 
   float gravity { pendulum.GetGravity() };
+  float* background_color = new float[4];
+  ToImGuiColor(sf::Color::White, background_color);
   // First bob
   float bob1_length { pendulum.GetBob1Length() };
   float bob1_mass { pendulum.GetBob1Mass() };
@@ -97,18 +99,23 @@ int main() {
   bob2_trailsize = pendulum.GetBob2TrailSize();
   ToImGuiColor(pendulum.GetBob2FillColor(), bob2_color);
     
-    ImGui::Begin("Settings");
+    ImGui::Begin("State Settings");
       ImGui::SliderFloat("Gravity", &gravity, 0.1f, 20.0f);
       ImGui::SliderFloat("Bob1.Length", &bob1_length, 0.1f, 5.0f);
       ImGui::SliderFloat("Bob1.Mass", &bob1_mass, 0.1f, 50.0f);
       ImGui::SliderFloat("Bob1.Damp", &bob1_damp, 0.99f, 1.0f);
       ImGui::SliderInt("Bob1.Trail.Size", &bob1_trailsize, 0, 500);
-      ImGui::ColorEdit4("Bob1.Color", bob1_color,
-        ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
       ImGui::SliderFloat("Bob2.Length", &bob2_length, 0.1f, 5.0f);
       ImGui::SliderFloat("Bob2.Mass", &bob2_mass, 0.1f, 50.0f);
       ImGui::SliderFloat("Bob2.Damp", &bob2_damp, 0.99f, 1.0f);
       ImGui::SliderInt("Bob2.Trail.Size", &bob2_trailsize, 0, 500);
+    ImGui::End();
+
+    ImGui::Begin("View Settings");
+      ImGui::ColorEdit4("Background.Color", background_color,
+        ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
+      ImGui::ColorEdit4("Bob1.Color", bob1_color,
+        ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
       ImGui::ColorEdit4("Bob2.Color", bob2_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
@@ -127,7 +134,7 @@ int main() {
     pendulum.SetBob2TrailSize(bob2_trailsize);
     pendulum.SetBob2FillColor(ToSFMLColor(bob2_color));
 
-    window.clear(sf::Color::White);
+    window.clear(ToSFMLColor(background_color));
     window.draw(pendulum);
     ImGui::SFML::Render(window);
     window.display();
