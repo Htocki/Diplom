@@ -6,13 +6,13 @@ DoublePendulum::DoublePendulum(
   float angle1, float angle2)
 {
   bob1.angle = angle1;
-  bob1.SetDamp(1.f);
+  bob1.SetDamp(0.999);
   bob1.SetFillColor(sf::Color::Black);
   bob1.SetLength(length1);
   bob1.SetMass(mass1);
 
   bob2.angle = angle2;
-  bob2.SetDamp(1.f);
+  bob2.SetDamp(0.999);
   bob2.SetFillColor(sf::Color::Black);
   bob2.SetLength(length2);
   bob2.SetMass(mass2);

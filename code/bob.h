@@ -17,6 +17,7 @@ public:
   void SetPosition(const sf::Vector2f& position); 
 
   float GetDamp() const { return damp; }
+  const sf::Color& GetFillColor() const { return circle.getFillColor(); }
   float GetLength() const { return length; }
   float GetMass() const { return mass; } 
   const sf::Vector2f& GetPosition() const { return circle.getPosition(); }
