@@ -33,8 +33,8 @@ int main() {
   ImGui::SFML::Init(window);
   sf::Clock deltaClock;
 
-  DoublePendulum pendulum(1, 0.8, 10, 4, 90*PI/180, 90*PI/180);
-  pendulum.SetupRenderObjects(WIDTH, HEIGHT);
+  DoublePendulum pendulum(1, 0.8, 10, 4, 90*PI/180, 90*PI/180,
+    sf::Vector2f(WIDTH/2 + 150, HEIGHT/2 - 40));
 
   float* background_color = new float[4];
   ToImGuiColor(sf::Color::White, background_color);

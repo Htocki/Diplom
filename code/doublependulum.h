@@ -16,7 +16,8 @@ public:
   DoublePendulum(
     float length1, float length2,
     float mass1, float mass2,
-    float angle1, float angle2);
+    float angle1, float angle2,
+    sf::Vector2f position);
 
   void SetupRenderObjects(float width, float height);
   void Update();

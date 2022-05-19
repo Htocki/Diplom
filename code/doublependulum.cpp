@@ -3,7 +3,8 @@
 DoublePendulum::DoublePendulum(
   float length1, float length2,
   float mass1, float mass2,
-  float angle1, float angle2)
+  float angle1, float angle2,
+  sf::Vector2f position)
 {
   bob1.angle = angle1;
   bob1.damp = 0.999;
@@ -16,14 +17,11 @@ DoublePendulum::DoublePendulum(
   bob2.SetFillColor(sf::Color::Black);
   bob2.length = length2;
   bob2.mass = mass2;
-}
 
-void DoublePendulum::SetupRenderObjects(float width, float height) {
   vb.create(3);
   vb.setPrimitiveType(sf::LineStrip);
-
-  rod_vertices[0].position = sf::Vector2f(width/2 + 150, height/2 - 40);
-  for (int i = 0; i < 3; i++) {
+  rod_vertices[0].position = position;
+  for (int i { 0 }; i < 3; ++i) {
     rod_vertices[i].color = sf::Color::Black;
   }
 }
