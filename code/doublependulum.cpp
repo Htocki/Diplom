@@ -98,6 +98,8 @@ void DoublePendulum::PrintInfo() {
 
 void DoublePendulum::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   if (show_rod) { target.draw(vb, states); }
+  target.draw(bob1.trail);
+  target.draw(bob2.trail);
   target.draw(bob1);
   target.draw(bob2);
 }

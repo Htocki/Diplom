@@ -22,6 +22,5 @@ void Bob::Update() {
 }
 
 void Bob::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  target.draw(trail, states);
   target.draw(circle, states);
 }
