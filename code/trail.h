@@ -17,7 +17,7 @@ public:
 
 private:
   int required_size { 300 };
-  std::vector<sf::Vertex> trails;
+  std::vector<sf::Vertex> vertexes;
   NormalizedColor color;
 
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

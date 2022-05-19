@@ -22,12 +22,6 @@ int main() {
     sf::Vector2f(WIDTH/2 + 150, HEIGHT/2 - 40));
 
   NormalizedColor background_color(sf::Color::White);
-  // First bob
-  float* bob1_color = new float[4];
-  ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
-  // Second bob
-  float* bob2_color = new float[4];
-  ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
 
   while (window.isOpen()) {
     sf::Event event;
@@ -59,11 +53,6 @@ int main() {
   
     pendulum.Update();
     ImGui::SFML::Update(window, deltaClock.restart());
-
-  // First bob
-  ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
-  // Second bob
-  ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
     
     ImGui::Begin("Field");
       ImGui::ColorEdit4("Background.Color", background_color.channels,
@@ -78,7 +67,7 @@ int main() {
       ImGui::SliderFloat("Length", pendulum.bob1.LinkLength(), 0.1f, 5.0f);
       ImGui::SliderFloat("Mass", pendulum.bob1.LinkMass(), 0.1f, 50.0f);
       ImGui::SliderFloat("Damp", pendulum.bob1.LinkDamp(), 0.99f, 1.0f);
-      ImGui::ColorEdit4("Color", bob1_color,
+      ImGui::ColorEdit4("Color", pendulum.bob1.LinkColor(),
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
@@ -92,7 +81,7 @@ int main() {
       ImGui::SliderFloat("Length", pendulum.bob2.LinkLength(), 0.1f, 5.0f);
       ImGui::SliderFloat("Mass", pendulum.bob2.LinkMass(), 0.1f, 50.0f);
       ImGui::SliderFloat("Damp", pendulum.bob2.LinkDamp(), 0.99f, 1.0f);
-      ImGui::ColorEdit4("Color", bob2_color,
+      ImGui::ColorEdit4("Color", pendulum.bob2.LinkColor(),
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
@@ -101,11 +90,6 @@ int main() {
       ImGui::ColorEdit4("Color", pendulum.bob2.trail.LinkColor(),
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
-
-    // First bob
-    pendulum.bob1.SetFillColor(ToSFMLColor(bob1_color));
-    // Second bob
-    pendulum.bob2.SetFillColor(ToSFMLColor(bob2_color));
 
     window.clear(background_color.GetAsSFML());
     window.draw(pendulum);

@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "constaints.h"
+#include "normalization.h"
 #include "trail.h"
 
 class Bob : public sf::Drawable {
@@ -17,12 +18,11 @@ public:
   Trail trail;
   float velocity { 0.f };  // angular velocity
   
-  void SetFillColor(const sf::Color& color);
   void SetPosition(const sf::Vector2f& position);
 
-  const sf::Color& GetFillColor() const { return circle.getFillColor(); }
   const sf::Vector2f& GetPosition() const { return circle.getPosition(); }
 
+  float* LinkColor() { return color.channels; }
   float* LinkDamp() { return &damp; }
   float* LinkMass() { return &mass; }
   float* LinkLength() { return &length; }
@@ -33,6 +33,7 @@ public:
 
 private:
   sf::CircleShape circle;
+  NormalizedColor color;
 
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

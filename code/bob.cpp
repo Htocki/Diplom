@@ -1,9 +1,5 @@
 #include "bob.h"
 
-void Bob::SetFillColor(const sf::Color& color) {
-  circle.setFillColor(color);
-}
-
 void Bob::SetPosition(const sf::Vector2f& position) {
   circle.setPosition(position);
   trail.position = position;
@@ -14,10 +10,19 @@ bool Bob::IsClicked(const sf::Vector2i& position) {
 }
 
 void Bob::Update() {
+  // Изменение цвета
+  auto color = this->color.GetAsSFML();
+  if (color != circle.getFillColor()) {
+    circle.setFillColor(color);
+  }
+
+  // Изменение массы
   if (circle.getRadius() != mass) {
     circle.setRadius(mass);
     circle.setOrigin(sf::Vector2f(mass, mass));
   }
+
+  // Обновление следа
   trail.Update();
 }
 

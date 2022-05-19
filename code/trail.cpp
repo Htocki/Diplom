@@ -2,31 +2,31 @@
 
 void Trail::Update() {
   // Изменение цвета
-  auto c = this->color.GetAsSFML();
-  if (!trails.empty() && trails[0].color != c) {
-    for (auto& trail : trails) {
-      trail.color = c;
+  auto color { this->color.GetAsSFML() };
+  if (!vertexes.empty() && vertexes[0].color != color) {
+    for (auto& trail : vertexes) {
+      trail.color = color;
     }
   }
 
   // Изменение размера
-  int current_size = static_cast<int>(trails.size());
+  int current_size = static_cast<int>(vertexes.size());
   if (current_size < required_size) {
-    trails.push_back(sf::Vertex(position, c));
+    vertexes.push_back(sf::Vertex(position, color));
   } else if (current_size > required_size) {
     for (int i { 0 }; i < current_size - 1; i++) {
-      trails[i].position = trails[i + 1].position;
+      vertexes[i].position = vertexes[i + 1].position;
     }
-    trails[current_size - 1].position = position;
-    trails.erase(trails.begin());
+    vertexes[current_size - 1].position = position;
+    vertexes.erase(vertexes.begin());
   } else {
     for (int i { 0 }; i < current_size - 1; i++) {
-      trails[i].position = trails[i + 1].position;
+      vertexes[i].position = vertexes[i + 1].position;
     }
-    trails[current_size - 1].position = position;
+    vertexes[current_size - 1].position = position;
   } 
 }
 
 void Trail::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  target.draw(&trails[0], trails.size(), sf::LineStrip);
+  target.draw(&vertexes[0], vertexes.size(), sf::LineStrip);
 }

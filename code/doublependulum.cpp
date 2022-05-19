@@ -8,13 +8,11 @@ DoublePendulum::DoublePendulum(
 {
   bob1.angle = angle1;
   bob1.damp = 0.999;
-  bob1.SetFillColor(sf::Color::Black);
   bob1.length = length1;
   bob1.mass = mass1;
 
   bob2.angle = angle2;
   bob2.damp = 0.999;
-  bob2.SetFillColor(sf::Color::Black);
   bob2.length = length2;
   bob2.mass = mass2;
 
