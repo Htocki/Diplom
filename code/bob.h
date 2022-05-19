@@ -26,6 +26,10 @@ public:
   float GetMass() const { return mass; } 
   const sf::Vector2f& GetPosition() const { return circle.getPosition(); }
 
+  float* LinkDamp() { return &damp; }
+  float* LinkMass() { return &mass; }
+  float* LinkLength() { return &length; }
+
   void Update();
   
   bool IsClicked(const sf::Vector2i& position);

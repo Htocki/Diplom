@@ -28,6 +28,10 @@ bool Bob::IsClicked(const sf::Vector2i& position) {
 }
 
 void Bob::Update() {
+  if (circle.getRadius() != mass) {
+    circle.setRadius(mass);
+    circle.setOrigin(sf::Vector2f(mass, mass));
+  }
   trail.Update();
 }
 

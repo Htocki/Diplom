@@ -39,18 +39,12 @@ int main() {
   float* background_color = new float[4];
   ToImGuiColor(sf::Color::White, background_color);
   // First bob
-  float bob1_length { pendulum.bob1.GetLength() };
-  float bob1_mass { pendulum.bob1.GetMass() };
-  float bob1_damp { pendulum.bob1.GetDamp() };
   int bob1_trail_size { pendulum.bob1.trail.GetSize() };
   float* bob1_color = new float[4];
   ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
   float* bob1_trail_color = new float[4];
   ToImGuiColor(pendulum.bob1.trail.GetColor(), bob1_trail_color);
   // Second bob
-  float bob2_length { pendulum.bob2.GetLength() };
-  float bob2_mass { pendulum.bob2.GetMass() };
-  float bob2_damp { pendulum.bob2.GetDamp() };
   int bob2_trail_size { pendulum.bob2.trail.GetSize() };
   float* bob2_color = new float[4];
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
@@ -89,16 +83,10 @@ int main() {
     ImGui::SFML::Update(window, deltaClock.restart());
 
   // First bob
-  bob1_length = pendulum.bob1.GetLength();
-  bob1_mass = pendulum.bob1.GetMass();
-  bob1_damp = pendulum.bob1.GetDamp();
   bob1_trail_size = pendulum.bob1.trail.GetSize();
   ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
   ToImGuiColor(pendulum.bob1.trail.GetColor(), bob1_trail_color);
   // Second bob
-  bob2_length = pendulum.bob2.GetLength();
-  bob2_mass = pendulum.bob2.GetMass();
-  bob2_damp = pendulum.bob2.GetDamp();
   bob2_trail_size = pendulum.bob2.trail.GetSize();
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
   ToImGuiColor(pendulum.bob2.trail.GetColor(), bob2_trail_color);
@@ -113,9 +101,9 @@ int main() {
     ImGui::End();
 
     ImGui::Begin("Field.Pendulum.Bob1");
-      ImGui::SliderFloat("Length", &bob1_length, 0.1f, 5.0f);
-      ImGui::SliderFloat("Mass", &bob1_mass, 0.1f, 50.0f);
-      ImGui::SliderFloat("Damp", &bob1_damp, 0.99f, 1.0f);
+      ImGui::SliderFloat("Length", pendulum.bob1.LinkLength(), 0.1f, 5.0f);
+      ImGui::SliderFloat("Mass", pendulum.bob1.LinkMass(), 0.1f, 50.0f);
+      ImGui::SliderFloat("Damp", pendulum.bob1.LinkDamp(), 0.99f, 1.0f);
       ImGui::ColorEdit4("Color", bob1_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
@@ -127,9 +115,9 @@ int main() {
     ImGui::End();
 
     ImGui::Begin("Field.Pendulum.Bob2");
-      ImGui::SliderFloat("Length", &bob2_length, 0.1f, 5.0f);
-      ImGui::SliderFloat("Mass", &bob2_mass, 0.1f, 50.0f);
-      ImGui::SliderFloat("Damp", &bob2_damp, 0.99f, 1.0f);
+      ImGui::SliderFloat("Length", pendulum.bob2.LinkLength(), 0.1f, 5.0f);
+      ImGui::SliderFloat("Mass", pendulum.bob2.LinkMass(), 0.1f, 50.0f);
+      ImGui::SliderFloat("Damp", pendulum.bob2.LinkDamp(), 0.99f, 1.0f);
       ImGui::ColorEdit4("Color", bob2_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
@@ -141,16 +129,10 @@ int main() {
     ImGui::End();
 
     // First bob
-    pendulum.bob1.SetLength(bob1_length);
-    pendulum.bob1.SetMass(bob1_mass);
-    pendulum.bob1.SetDamp(bob1_damp);
     pendulum.bob1.trail.SetSize(bob1_trail_size);
     pendulum.bob1.SetFillColor(ToSFMLColor(bob1_color));
     pendulum.bob1.trail.SetColor(ToSFMLColor(bob1_trail_color));
     // Second bob
-    pendulum.bob2.SetLength(bob2_length);
-    pendulum.bob2.SetMass(bob2_mass);
-    pendulum.bob2.SetDamp(bob2_damp);
     pendulum.bob2.trail.SetSize(bob2_trail_size);
     pendulum.bob2.SetFillColor(ToSFMLColor(bob2_color));
     pendulum.bob2.trail.SetColor(ToSFMLColor(bob2_trail_color));
