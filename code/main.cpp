@@ -105,28 +105,40 @@ int main() {
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
   ToImGuiColor(pendulum.bob2.trail.GetColor(), bob2_trail_color);
     
-    ImGui::Begin("State Settings");
-      ImGui::SliderFloat("Gravity", &gravity, 0.1f, 20.0f);
-      ImGui::SliderFloat("Bob1.Length", &bob1_length, 0.1f, 5.0f);
-      ImGui::SliderFloat("Bob1.Mass", &bob1_mass, 0.1f, 50.0f);
-      ImGui::SliderFloat("Bob1.Damp", &bob1_damp, 0.99f, 1.0f);
-      ImGui::SliderInt("Bob1.Trail.Size", &bob1_trail_size, 0, 500);
-      ImGui::SliderFloat("Bob2.Length", &bob2_length, 0.1f, 5.0f);
-      ImGui::SliderFloat("Bob2.Mass", &bob2_mass, 0.1f, 50.0f);
-      ImGui::SliderFloat("Bob2.Damp", &bob2_damp, 0.99f, 1.0f);
-      ImGui::SliderInt("Bob2.Trail.Size", &bob2_trail_size, 0, 500);
-    ImGui::End();
-
-    ImGui::Begin("View Settings");
+    ImGui::Begin("Field");
       ImGui::ColorEdit4("Background.Color", background_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
-      ImGui::ColorEdit4("Bob1.FillColor", bob1_color,
+    ImGui::End();
+
+    ImGui::Begin("Field.Pendulum");
+      ImGui::SliderFloat("Gravity", &gravity, 0.1f, 20.0f);
+    ImGui::End();
+
+    ImGui::Begin("Field.Pendulum.Bob1");
+      ImGui::SliderFloat("Length", &bob1_length, 0.1f, 5.0f);
+      ImGui::SliderFloat("Mass", &bob1_mass, 0.1f, 50.0f);
+      ImGui::SliderFloat("Damp", &bob1_damp, 0.99f, 1.0f);
+      ImGui::ColorEdit4("Color", bob1_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
-      ImGui::ColorEdit4("Bob1.Trail.Color", bob1_trail_color,
+    ImGui::End();
+
+    ImGui::Begin("Field.Pendulum.Bob1.Trail");
+      ImGui::SliderInt("Size", &bob1_trail_size, 0, 500);
+      ImGui::ColorEdit4("Color", bob1_trail_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
-      ImGui::ColorEdit4("Bob2.FillColor", bob2_color,
+    ImGui::End();
+
+    ImGui::Begin("Field.Pendulum.Bob2");
+      ImGui::SliderFloat("Length", &bob2_length, 0.1f, 5.0f);
+      ImGui::SliderFloat("Mass", &bob2_mass, 0.1f, 50.0f);
+      ImGui::SliderFloat("Damp", &bob2_damp, 0.99f, 1.0f);
+      ImGui::ColorEdit4("Color", bob2_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
-      ImGui::ColorEdit4("Bob2.Trail.Color", bob2_trail_color,
+    ImGui::End();
+
+    ImGui::Begin("Field.Pendulum.Bob2.Trail");
+      ImGui::SliderInt("Size", &bob2_trail_size, 0, 500);
+      ImGui::ColorEdit4("Color", bob2_trail_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
