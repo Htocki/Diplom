@@ -6,7 +6,7 @@ void Bob::SetFillColor(const sf::Color& color) {
 
 void Bob::SetPosition(const sf::Vector2f& position) {
   circle.setPosition(position);
-  trail.SetPosition(position);
+  trail.position = position;
 }
 
 bool Bob::IsClicked(const sf::Vector2i& position) {
