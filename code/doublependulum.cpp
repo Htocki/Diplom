@@ -70,7 +70,7 @@ void DoublePendulum::Update() {
   bob1.Update();
   bob2.Update();
 
-  PrintInfo();
+  //PrintInfo();
 }
 
 void DoublePendulum::UpdateRod() {

@@ -6,25 +6,10 @@
 #include <SFML/Window.hpp>
 
 #include "doublependulum.h"
+#include "normalization.h"
 
 const unsigned int WIDTH = 1000;
 const unsigned int HEIGHT = 600;
-
-void ToImGuiColor(const sf::Color& sfml_c, float* imgui_c) {
-  imgui_c[0] = float(sfml_c.r)/255.f;
-  imgui_c[1] = float(sfml_c.g)/255.f;
-  imgui_c[2] = float(sfml_c.b)/255.f;
-  imgui_c[3] = float(sfml_c.a)/255.f;
-}
-
-sf::Color ToSFMLColor(const float* imgui_c) {
-  return sf::Color {
-    uint8_t(imgui_c[0]*255),
-    uint8_t(imgui_c[1]*255),
-    uint8_t(imgui_c[2]*255),
-    uint8_t(imgui_c[3]*255) 
-  };
-}
 
 int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Double pendulum");
@@ -36,18 +21,13 @@ int main() {
   DoublePendulum pendulum(1, 0.8, 10, 4, 90*PI/180, 90*PI/180,
     sf::Vector2f(WIDTH/2 + 150, HEIGHT/2 - 40));
 
-  float* background_color = new float[4];
-  ToImGuiColor(sf::Color::White, background_color);
+  NormalizedColor background_color(sf::Color::White);
   // First bob
   float* bob1_color = new float[4];
   ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
-  float* bob1_trail_color = new float[4];
-  ToImGuiColor(pendulum.bob1.trail.GetColor(), bob1_trail_color);
   // Second bob
   float* bob2_color = new float[4];
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
-  float* bob2_trail_color = new float[4];
-  ToImGuiColor(pendulum.bob2.trail.GetColor(), bob2_trail_color);
 
   while (window.isOpen()) {
     sf::Event event;
@@ -82,13 +62,11 @@ int main() {
 
   // First bob
   ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
-  ToImGuiColor(pendulum.bob1.trail.GetColor(), bob1_trail_color);
   // Second bob
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
-  ToImGuiColor(pendulum.bob2.trail.GetColor(), bob2_trail_color);
     
     ImGui::Begin("Field");
-      ImGui::ColorEdit4("Background.Color", background_color,
+      ImGui::ColorEdit4("Background.Color", background_color.channels,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
@@ -106,7 +84,7 @@ int main() {
 
     ImGui::Begin("Field.Pendulum.Bob1.Trail");
       ImGui::SliderInt("Size", pendulum.bob1.trail.LinkSize(), 0, 500);
-      ImGui::ColorEdit4("Color", bob1_trail_color,
+      ImGui::ColorEdit4("Color", pendulum.bob1.trail.LinkColor(),
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
@@ -120,18 +98,16 @@ int main() {
 
     ImGui::Begin("Field.Pendulum.Bob2.Trail");
       ImGui::SliderInt("Size", pendulum.bob2.trail.LinkSize(), 0, 500);
-      ImGui::ColorEdit4("Color", bob2_trail_color,
+      ImGui::ColorEdit4("Color", pendulum.bob2.trail.LinkColor(),
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
     // First bob
     pendulum.bob1.SetFillColor(ToSFMLColor(bob1_color));
-    pendulum.bob1.trail.SetColor(ToSFMLColor(bob1_trail_color));
     // Second bob
     pendulum.bob2.SetFillColor(ToSFMLColor(bob2_color));
-    pendulum.bob2.trail.SetColor(ToSFMLColor(bob2_trail_color));
 
-    window.clear(ToSFMLColor(background_color));
+    window.clear(background_color.GetAsSFML());
     window.draw(pendulum);
     ImGui::SFML::Render(window);
     window.display();

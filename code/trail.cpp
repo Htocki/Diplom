@@ -1,21 +1,23 @@
 #include "trail.h"
 
-void Trail::SetColor(const sf::Color& color) {
-  this->color = color;
-  for (auto& trail : trails) {
-    trail.color = color;
-  }
-}
-
 void Trail::SetPosition(const sf::Vector2f& position) {
   this->position = position;
 }
 
 void Trail::Update() {
+  // Изменение цвета
+  auto c = this->color.GetAsSFML();
+  if (!trails.empty() && trails[0].color != c) {
+    for (auto& trail : trails) {
+      trail.color = c;
+    }
+  }
+
+  // Изменение размера
   int current_size = static_cast<int>(trails.size());
   auto position { GetPosition() };
   if (current_size < required_size) {
-    trails.push_back(sf::Vertex(position, this->color));
+    trails.push_back(sf::Vertex(position, c));
   } else if (current_size > required_size) {
     for (int i { 0 }; i < current_size - 1; i++) {
       trails[i].position = trails[i + 1].position;

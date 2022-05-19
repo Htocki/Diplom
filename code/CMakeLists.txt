@@ -9,6 +9,8 @@ add_executable(${PROJECT_NAME}
   "doublependulum.cpp"
   "doublependulum.h"
   "main.cpp"
+  "normalization.cpp"
+  "normalization.h"
   "trail.cpp"
   "trail.h"
   ${IMGUI_SOURCES}
