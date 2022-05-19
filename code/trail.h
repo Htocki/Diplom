@@ -7,12 +7,12 @@
 class Trail : public sf::Drawable {
 public:
   void SetColor(const sf::Color& color);
-  void SetSize(int size);
   void SetPosition(const sf::Vector2f& position);
 
   const sf::Color& GetColor() const { return trail_color; }
   const sf::Vector2f& GetPosition() const { return position; }
-  int GetSize() const { return required_size; }
+
+  int* LinkSize() { return &required_size; }
 
   void Update();
 

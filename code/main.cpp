@@ -39,13 +39,11 @@ int main() {
   float* background_color = new float[4];
   ToImGuiColor(sf::Color::White, background_color);
   // First bob
-  int bob1_trail_size { pendulum.bob1.trail.GetSize() };
   float* bob1_color = new float[4];
   ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
   float* bob1_trail_color = new float[4];
   ToImGuiColor(pendulum.bob1.trail.GetColor(), bob1_trail_color);
   // Second bob
-  int bob2_trail_size { pendulum.bob2.trail.GetSize() };
   float* bob2_color = new float[4];
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
   float* bob2_trail_color = new float[4];
@@ -83,11 +81,9 @@ int main() {
     ImGui::SFML::Update(window, deltaClock.restart());
 
   // First bob
-  bob1_trail_size = pendulum.bob1.trail.GetSize();
   ToImGuiColor(pendulum.bob1.GetFillColor(), bob1_color);
   ToImGuiColor(pendulum.bob1.trail.GetColor(), bob1_trail_color);
   // Second bob
-  bob2_trail_size = pendulum.bob2.trail.GetSize();
   ToImGuiColor(pendulum.bob2.GetFillColor(), bob2_color);
   ToImGuiColor(pendulum.bob2.trail.GetColor(), bob2_trail_color);
     
@@ -109,7 +105,7 @@ int main() {
     ImGui::End();
 
     ImGui::Begin("Field.Pendulum.Bob1.Trail");
-      ImGui::SliderInt("Size", &bob1_trail_size, 0, 500);
+      ImGui::SliderInt("Size", pendulum.bob1.trail.LinkSize(), 0, 500);
       ImGui::ColorEdit4("Color", bob1_trail_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
@@ -123,17 +119,15 @@ int main() {
     ImGui::End();
 
     ImGui::Begin("Field.Pendulum.Bob2.Trail");
-      ImGui::SliderInt("Size", &bob2_trail_size, 0, 500);
+      ImGui::SliderInt("Size", pendulum.bob2.trail.LinkSize(), 0, 500);
       ImGui::ColorEdit4("Color", bob2_trail_color,
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
     // First bob
-    pendulum.bob1.trail.SetSize(bob1_trail_size);
     pendulum.bob1.SetFillColor(ToSFMLColor(bob1_color));
     pendulum.bob1.trail.SetColor(ToSFMLColor(bob1_trail_color));
     // Second bob
-    pendulum.bob2.trail.SetSize(bob2_trail_size);
     pendulum.bob2.SetFillColor(ToSFMLColor(bob2_color));
     pendulum.bob2.trail.SetColor(ToSFMLColor(bob2_trail_color));
 

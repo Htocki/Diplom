@@ -11,10 +11,6 @@ void Trail::SetPosition(const sf::Vector2f& position) {
   this->position = position;
 }
 
-void Trail::SetSize(int size) {
-  required_size = size;
-};
-
 void Trail::Update() {
   int current_size = static_cast<int>(trails.size());
   auto position { GetPosition() };
