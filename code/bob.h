@@ -17,7 +17,6 @@ public:
   Trail trail;
   float velocity { 0.f };  // angular velocity
   
-
   void SetFillColor(const sf::Color& color);
   void SetPosition(const sf::Vector2f& position);
 

@@ -1,7 +1,7 @@
 #include "trail.h"
 
 void Trail::SetColor(const sf::Color& color) {
-  trail_color = color;
+  this->color = color;
   for (auto& trail : trails) {
     trail.color = color;
   }
@@ -15,7 +15,7 @@ void Trail::Update() {
   int current_size = static_cast<int>(trails.size());
   auto position { GetPosition() };
   if (current_size < required_size) {
-    trails.push_back(sf::Vertex(position, trail_color));
+    trails.push_back(sf::Vertex(position, this->color));
   } else if (current_size > required_size) {
     for (int i { 0 }; i < current_size - 1; i++) {
       trails[i].position = trails[i + 1].position;
