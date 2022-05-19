@@ -68,8 +68,12 @@ void DoublePendulum::Update() {
   
   UpdatePositions();
   UpdateRod();
-  UpdateBobs();
-  UpdateTrails(end_pos2);
+  
+  bob1.SetPosition(end_pos1);
+  bob2.SetPosition(end_pos2);
+  bob1.Update();
+  bob2.Update();
+
   PrintInfo();
 }
 
@@ -77,29 +81,6 @@ void DoublePendulum::UpdateRod() {
   rod_vertices[1].position = end_pos1;
   rod_vertices[2].position = end_pos2;
   vb.update(rod_vertices);
-}
-
-void DoublePendulum::UpdateBobs() {
-  bob1.SetPosition(end_pos1);
-  bob2.SetPosition(end_pos2);
-}
-
-void DoublePendulum::UpdateTrails(const sf::Vector2f& position) {
-  int current_size = static_cast<int>(trails.size());
-  if (current_size < required_size) {
-    trails.push_back(sf::Vertex(position, sf::Color::Green));
-  } else if (current_size > required_size) {
-    for (int i { 0 }; i < current_size - 1; i++) {
-      trails[i].position = trails[i + 1].position;
-    }
-    trails[current_size - 1].position = position;
-    trails.erase(trails.begin());
-  } else {
-    for (int i { 0 }; i < current_size - 1; i++) {
-      trails[i].position = trails[i + 1].position;
-    }
-    trails[current_size - 1].position = position;
-  } 
 }
 
 void DoublePendulum::PrintInfo() {
@@ -119,7 +100,6 @@ void DoublePendulum::PrintInfo() {
 
 void DoublePendulum::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   if (show_rod) { target.draw(vb, states); }
-  target.draw(&trails[0], trails.size(), sf::LineStrip);
   target.draw(bob1);
   target.draw(bob2);
 }
