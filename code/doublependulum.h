@@ -25,9 +25,7 @@ public:
   void Clicked(sf::Vector2i mouse_position);
   void RodVisibility();
 
-  void SetGravity(float gravity) { this->gravity = gravity; }
-
-  float GetGravity() const { return gravity; }
+  float* LinkGravity() { return &gravity; }
 
 private:
   float gravity { 9.8 };

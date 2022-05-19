@@ -36,7 +36,6 @@ int main() {
   DoublePendulum pendulum(1, 0.8, 10, 4, 90*PI/180, 90*PI/180);
   pendulum.SetupRenderObjects(WIDTH, HEIGHT);
 
-  float gravity { pendulum.GetGravity() };
   float* background_color = new float[4];
   ToImGuiColor(sf::Color::White, background_color);
   // First bob
@@ -89,7 +88,6 @@ int main() {
     pendulum.Update();
     ImGui::SFML::Update(window, deltaClock.restart());
 
-  gravity = pendulum.GetGravity();
   // First bob
   bob1_length = pendulum.bob1.GetLength();
   bob1_mass = pendulum.bob1.GetMass();
@@ -111,7 +109,7 @@ int main() {
     ImGui::End();
 
     ImGui::Begin("Field.Pendulum");
-      ImGui::SliderFloat("Gravity", &gravity, 0.1f, 20.0f);
+      ImGui::SliderFloat("Gravity", pendulum.LinkGravity(), 0.1f, 20.0f);
     ImGui::End();
 
     ImGui::Begin("Field.Pendulum.Bob1");
@@ -142,7 +140,6 @@ int main() {
         ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
     ImGui::End();
 
-    pendulum.SetGravity(gravity);
     // First bob
     pendulum.bob1.SetLength(bob1_length);
     pendulum.bob1.SetMass(bob1_mass);
