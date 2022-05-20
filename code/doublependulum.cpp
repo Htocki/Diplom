@@ -72,10 +72,8 @@ void DoublePendulum::Update() {
   rod_vertices[1].position = end_pos1;
   rod_vertices[2].position = end_pos2;
   vb.update(rod_vertices);
-  bob1.SetPosition(end_pos1);
-  bob2.SetPosition(end_pos2);
-  bob1.Update();
-  bob2.Update();
+  bob1.Update(end_pos1);
+  bob2.Update(end_pos2);
 
   //PrintInfo();
 }

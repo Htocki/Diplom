@@ -8,12 +8,10 @@
 
 class Trail : public sf::Drawable {
 public:
-  sf::Vector2f position;
-  
   int* LinkSize() { return &required_size; }
   float* LinkColor() { return color.channels; }
 
-  void Update();
+  void Update(const sf::Vector2f& position);
 
 private:
   int required_size { 300 };

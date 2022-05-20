@@ -17,17 +17,13 @@ public:
   float mass { 0.f };
   Trail trail;
   float velocity { 0.f };  // angular velocity
-  
-  void SetPosition(const sf::Vector2f& position);
-
-  const sf::Vector2f& GetPosition() const { return circle.getPosition(); }
 
   float* LinkColor() { return color.channels; }
   float* LinkDamp() { return &damp; }
   float* LinkMass() { return &mass; }
   float* LinkLength() { return &length; }
 
-  void Update();
+  void Update(const sf::Vector2f& position);
 
 private:
   sf::CircleShape circle;

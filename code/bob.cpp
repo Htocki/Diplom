@@ -1,11 +1,9 @@
 #include "bob.h"
 
-void Bob::SetPosition(const sf::Vector2f& position) {
+void Bob::Update(const sf::Vector2f& position) {
+  // Изменение позиции
   circle.setPosition(position);
-  trail.position = position;
-}
 
-void Bob::Update() {
   // Изменение цвета
   auto color = this->color.GetAsSFML();
   if (color != circle.getFillColor()) {
@@ -19,7 +17,7 @@ void Bob::Update() {
   }
 
   // Обновление следа
-  trail.Update();
+  trail.Update(position);
 }
 
 void Bob::draw(sf::RenderTarget& target, sf::RenderStates states) const {

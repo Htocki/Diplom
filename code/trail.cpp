@@ -1,6 +1,6 @@
 #include "trail.h"
 
-void Trail::Update() {
+void Trail::Update(const sf::Vector2f& position) {
   // Изменение цвета
   auto color { this->color.GetAsSFML() };
   if (!vertexes.empty() && vertexes[0].color != color) {
