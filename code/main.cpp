@@ -28,14 +28,6 @@ int main() {
     while (window.pollEvent(event)) {
       ImGui::SFML::ProcessEvent(window, event);
 
-      if (event.type == sf::Event::MouseButtonPressed) {
-        pendulum.Clicked(sf::Mouse::getPosition(window));
-      }
-
-      if (event.type == sf::Event::MouseMoved) {
-        pendulum.MoveBob(sf::Mouse::getPosition(window));
-      }
-
       if (event.type == sf::Event::KeyPressed) {
         switch(event.key.code) {
           case sf::Keyboard::Escape:

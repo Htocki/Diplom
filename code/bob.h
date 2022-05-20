@@ -28,8 +28,6 @@ public:
   float* LinkLength() { return &length; }
 
   void Update();
-  
-  bool IsClicked(const sf::Vector2i& position);
 
 private:
   sf::CircleShape circle;

@@ -35,46 +35,49 @@ void DoublePendulum::RodVisibility() {
 void DoublePendulum::Update() {
   if (hold) return;
   
+  // Вычисление ускорений
   float n11 = -gravity*(2*bob1.mass + bob2.mass)*std::sin(bob1.angle);
   float n12 = -bob2.mass*gravity*std::sin(bob1.angle - 2*bob2.angle);
   float n13 = -2*std::sin(bob1.angle - bob2.angle) * bob2.mass;
-  float n14 = bob2.velocity*bob2.velocity*bob2.length +
-    bob1.velocity*bob1.velocity*bob1.length*std::cos(bob1.angle -
-    bob2.angle);
-  
+  float n14 = std::pow(bob2.velocity, 2)*bob2.length +
+    std::pow(bob1.velocity, 2)*bob1.length*std::cos(bob1.angle - bob2.angle);
   float n21 = 2*std::sin(bob1.angle - bob2.angle);
-  float n22 = bob1.velocity*bob1.velocity*bob1.length*(bob1.mass + bob2.mass);
+  float n22 = std::pow(bob1.velocity, 2)*bob1.length*(bob1.mass + bob2.mass);
   float n23 = gravity*(bob1.mass + bob2.mass)*std::cos(bob1.angle);
-  float n24 = bob2.velocity*bob2.velocity*bob2.length*bob2.mass*
+  float n24 = std::pow(bob2.velocity, 2)*bob2.length*bob2.mass*
     std::cos(bob1.angle - bob2.angle);
-  
   float den = 2*bob1.mass + bob2.mass -
     bob2.mass*std::cos(2*bob1.angle - 2*bob2.angle);
-
   bob1.acceleration = (n11 + n12 + n13*n14)/(bob1.length*den*FPS*FPS);
   bob2.acceleration = (n21*(n22 + n23 + n24))/(bob2.length*den*FPS*FPS);
+  // Обновление скоростей
   bob1.velocity += bob1.acceleration;
   bob2.velocity += bob2.acceleration;
+  // Обновление углов
   bob1.angle += bob1.velocity;
   bob2.angle += bob2.velocity;
+  // Умножение скоростей на коэффициенты затухания
   bob1.velocity *= bob1.damp;
   bob2.velocity *= bob2.damp;
-  
-  UpdatePositions();
-  UpdateRod();
-  
+  // Вычисление позиций
+  pos1.x = bob1.length*std::sin(bob1.angle);
+  pos1.y = bob1.length*std::cos(bob1.angle); 
+  pos2.x = pos1.x + bob2.length*std::sin(bob2.angle);
+  pos2.y = pos1.y + bob2.length*std::cos(bob2.angle);
+  end_pos1.x = pos1.x*100 + rod_vertices[0].position.x;
+  end_pos1.y = pos1.y*100 + rod_vertices[0].position.y;
+  end_pos2.x = pos2.x*100 + rod_vertices[0].position.x;
+  end_pos2.y = pos2.y*100 + rod_vertices[0].position.y;
+  // Обновление отвесов
+  rod_vertices[1].position = end_pos1;
+  rod_vertices[2].position = end_pos2;
+  vb.update(rod_vertices);
   bob1.SetPosition(end_pos1);
   bob2.SetPosition(end_pos2);
   bob1.Update();
   bob2.Update();
 
   //PrintInfo();
-}
-
-void DoublePendulum::UpdateRod() {
-  rod_vertices[1].position = end_pos1;
-  rod_vertices[2].position = end_pos2;
-  vb.update(rod_vertices);
 }
 
 void DoublePendulum::PrintInfo() {
@@ -110,32 +113,4 @@ void DoublePendulum::UpdatePositions() {
   end_pos1.y = pos1.y*100 + rod_vertices[0].position.y;
   end_pos2.x = pos2.x*100 + rod_vertices[0].position.x;
   end_pos2.y = pos2.y*100 + rod_vertices[0].position.y;
-}
-
-void DoublePendulum::Clicked(sf::Vector2i mouse_position) {
-  if (bob1.IsClicked(mouse_position)) { moving1 = !moving1; }
-  if (bob2.IsClicked(mouse_position)) { moving2 = !moving2; }
-}
-
-namespace {
-void MoveBob(Bob& bob, const sf::Vector2f& del) {
-  bob.angle = std::atan(del.x / del.y);
-  if (del.y < 0) { bob.angle += PI; }
-  bob.length = std::sqrt(del.x*del.x + del.y*del.y)/100;
-}
-} // namespace
-
-void DoublePendulum::MoveBob(sf::Vector2i mouse_position) {
-  if (moving1) {
-    ::MoveBob(bob1, sf::Vector2f(
-      mouse_position.x - rod_vertices[0].position.x,
-      mouse_position.y - rod_vertices[0].position.y));
-  } else if (moving2) {
-    ::MoveBob(bob1, sf::Vector2f(
-      mouse_position.x - rod_vertices[1].position.x,
-      mouse_position.y - rod_vertices[1].position.y));
-  } else { return; }
-  bob1.velocity = 0;
-  bob2.velocity = 0;
-  UpdatePositions();
 }

@@ -5,10 +5,6 @@ void Bob::SetPosition(const sf::Vector2f& position) {
   trail.position = position;
 }
 
-bool Bob::IsClicked(const sf::Vector2i& position) {
-  return circle.getGlobalBounds().contains(position.x, position.y);
-}
-
 void Bob::Update() {
   // Изменение цвета
   auto color = this->color.GetAsSFML();

@@ -22,8 +22,6 @@ public:
   void SetupRenderObjects(float width, float height);
   void Update();
   void ChangeState();
-  void MoveBob(sf::Vector2i mouse_position);
-  void Clicked(sf::Vector2i mouse_position);
   void RodVisibility();
 
   float* LinkGravity() { return &gravity; }
