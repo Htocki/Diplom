@@ -27,6 +27,9 @@ void Trail::Update(const sf::Vector2f& position) {
   } 
 }
 
-void Trail::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void Trail::draw(
+  sf::RenderTarget& target,
+  sf::RenderStates states) const
+{
   target.draw(&vertexes[0], vertexes.size(), sf::LineStrip);
 }

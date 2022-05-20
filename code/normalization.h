@@ -14,11 +14,6 @@ struct NormalizedColor {
   NormalizedColor(const sf::Color& color);
   ~NormalizedColor();
 
-  NormalizedColor(const NormalizedColor&) = delete;
-  NormalizedColor& operator=(const NormalizedColor& other) = delete;
-  NormalizedColor(const NormalizedColor&&) noexcept = delete;
-  NormalizedColor& operator=(const NormalizedColor&& other) noexcept = delete;
-  
   void SetAsSFML(const sf::Color& color);
   sf::Color GetAsSFML() const;
 

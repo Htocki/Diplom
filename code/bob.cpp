@@ -20,6 +20,9 @@ void Bob::Update(const sf::Vector2f& position) {
   trail.Update(position);
 }
 
-void Bob::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void Bob::draw(
+  sf::RenderTarget& target,
+  sf::RenderStates states) const
+{
   target.draw(circle, states);
 }

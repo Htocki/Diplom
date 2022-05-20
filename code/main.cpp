@@ -15,7 +15,8 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Double pendulum");
   window.setFramerateLimit(FPS);
   window.setVerticalSyncEnabled(true);
-  ImGui::SFML::Init(window);
+  bool ok = ImGui::SFML::Init(window);
+  if (!ok) { return 0; }
   sf::Clock deltaClock;
 
   DoublePendulum pendulum(1, 0.8, 10, 4, 90*PI/180, 90*PI/180,
@@ -36,9 +37,8 @@ int main() {
           case sf::Keyboard::Space:
             pendulum.ChangeState();
             break;
-          case sf::Keyboard::R:
-            pendulum.RodVisibility();
-            break;
+          default:
+            ; // nothing
         }
       }
     }

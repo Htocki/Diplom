@@ -28,10 +28,6 @@ void DoublePendulum::ChangeState() {
   hold = !hold;
 }
 
-void DoublePendulum::RodVisibility() {
-  show_rod = !show_rod;
-}
-
 void DoublePendulum::Update() {
   if (hold) return;
   
@@ -50,15 +46,19 @@ void DoublePendulum::Update() {
     bob2.mass*std::cos(2*bob1.angle - 2*bob2.angle);
   bob1.acceleration = (n11 + n12 + n13*n14)/(bob1.length*den*FPS*FPS);
   bob2.acceleration = (n21*(n22 + n23 + n24))/(bob2.length*den*FPS*FPS);
+  
   // Обновление скоростей
   bob1.velocity += bob1.acceleration;
   bob2.velocity += bob2.acceleration;
+  
   // Обновление углов
   bob1.angle += bob1.velocity;
   bob2.angle += bob2.velocity;
+  
   // Умножение скоростей на коэффициенты затухания
   bob1.velocity *= bob1.damp;
   bob2.velocity *= bob2.damp;
+  
   // Вычисление позиций
   pos1.x = bob1.length*std::sin(bob1.angle);
   pos1.y = bob1.length*std::cos(bob1.angle); 
@@ -68,6 +68,7 @@ void DoublePendulum::Update() {
   end_pos1.y = pos1.y*100 + rod_vertices[0].position.y;
   end_pos2.x = pos2.x*100 + rod_vertices[0].position.x;
   end_pos2.y = pos2.y*100 + rod_vertices[0].position.y;
+  
   // Обновление отвесов
   rod_vertices[1].position = end_pos1;
   rod_vertices[2].position = end_pos2;
@@ -93,22 +94,13 @@ void DoublePendulum::PrintInfo() {
     << std::endl;
 }
 
-void DoublePendulum::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  if (show_rod) { target.draw(vb, states); }
+void DoublePendulum::draw(
+  sf::RenderTarget& target,
+  sf::RenderStates states) const
+{
+  target.draw(vb, states);
   target.draw(bob1.trail);
   target.draw(bob2.trail);
   target.draw(bob1);
   target.draw(bob2);
-}
-
-void DoublePendulum::UpdatePositions() {
-  pos1.x = bob1.length*std::sin(bob1.angle);
-  pos1.y = bob1.length*std::cos(bob1.angle); 
-  pos2.x = pos1.x + bob2.length*std::sin(bob2.angle);
-  pos2.y = pos1.y + bob2.length*std::cos(bob2.angle);
-  
-  end_pos1.x = pos1.x*100 + rod_vertices[0].position.x;
-  end_pos1.y = pos1.y*100 + rod_vertices[0].position.y;
-  end_pos2.x = pos2.x*100 + rod_vertices[0].position.x;
-  end_pos2.y = pos2.y*100 + rod_vertices[0].position.y;
 }

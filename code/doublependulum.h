@@ -19,10 +19,8 @@ public:
     float angle1, float angle2,
     sf::Vector2f position);
 
-  void SetupRenderObjects(float width, float height);
   void Update();
   void ChangeState();
-  void RodVisibility();
 
   float* LinkGravity() { return &gravity; }
 
@@ -32,18 +30,16 @@ private:
   sf::Vector2f end_pos1, end_pos2;
 
   // Params defining the state of pendulum
-  bool hold = false;
-  bool moving1 = false;
-  bool moving2 = false;
-  bool show_rod = true;
+  bool hold { false };
 
   // Render objects
   sf::Vertex rod_vertices[3];
   sf::VertexBuffer vb;
 
   // Functions
-  void UpdatePositions();
   void UpdateRod();
   void PrintInfo();
-  virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+  virtual void draw(
+    sf::RenderTarget& target,
+    sf::RenderStates states) const;
 };
