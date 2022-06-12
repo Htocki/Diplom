@@ -18,9 +18,10 @@ DoublePendulum::DoublePendulum(
 
   vb.create(3);
   vb.setPrimitiveType(sf::LineStrip);
+  auto rod_color = this->rod_color.GetAsSFML();
   rod_vertices[0].position = position;
   for (int i { 0 }; i < 3; ++i) {
-    rod_vertices[i].color = sf::Color::Black;
+    rod_vertices[i].color = rod_color;
   }
 }
 
@@ -30,6 +31,12 @@ void DoublePendulum::ChangeState() {
 
 void DoublePendulum::Update() {
   if (hold) return;
+
+  // Изменение цвета rod
+  auto rod_color = this->rod_color.GetAsSFML();
+  for (int i { 0 }; i < 3; ++i) {
+    rod_vertices[i].color = rod_color;
+  }
   
   // Вычисление ускорений
   float n11 = -gravity*(2*bob1.mass + bob2.mass)*std::sin(bob1.angle);

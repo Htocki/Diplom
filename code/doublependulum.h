@@ -6,8 +6,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "constaints.h"
 #include "bob.h"
+#include "constaints.h"
+#include "normalization.h"
 
 class DoublePendulum : public sf::Drawable {
 public:
@@ -23,6 +24,7 @@ public:
   void ChangeState();
 
   float* LinkGravity() { return &gravity; }
+  float* LinkRodColor() { return rod_color.channels; }
 
 private:
   float gravity { 9.8 };
@@ -35,6 +37,8 @@ private:
   // Render objects
   sf::Vertex rod_vertices[3];
   sf::VertexBuffer vb;
+
+  NormalizedColor rod_color;
 
   // Functions
   void UpdateRod();

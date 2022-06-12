@@ -55,6 +55,11 @@ int main() {
       ImGui::SliderFloat("Gravity", pendulum.LinkGravity(), 0.1f, 20.0f);
     ImGui::End();
 
+    ImGui::Begin("Field.Rod");
+      ImGui::ColorEdit4("Color", pendulum.LinkRodColor(),
+        ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_PickerHueWheel);
+    ImGui::End();
+
     ImGui::Begin("Field.Pendulum.Bob1");
       ImGui::SliderFloat("Length", pendulum.bob1.LinkLength(), 0.1f, 5.0f);
       ImGui::SliderFloat("Mass", pendulum.bob1.LinkMass(), 0.1f, 50.0f);
