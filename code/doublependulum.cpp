@@ -105,9 +105,9 @@ void DoublePendulum::draw(
   sf::RenderTarget& target,
   sf::RenderStates states) const
 {
-  target.draw(vb, states);
   target.draw(bob1.trail);
   target.draw(bob2.trail);
+  target.draw(vb, states);
   target.draw(bob1);
   target.draw(bob2);
 }
