@@ -82,23 +82,6 @@ void DoublePendulum::Update() {
   vb.update(rod_vertices);
   bob1.Update(end_pos1);
   bob2.Update(end_pos2);
-
-  //PrintInfo();
-}
-
-void DoublePendulum::PrintInfo() {
-  std::system("clear");
-  std::cout
-    << "Bob1" << std::endl
-    << "  Acceleration: " << bob1.acceleration << std::endl
-    << "  Velocity: " << bob1.velocity << std::endl
-    << "  Angle: " << bob1.angle << std::endl
-    << std::endl
-    << "Bob2" << std::endl
-    << "  Acceleration: " << bob2.acceleration << std::endl
-    << "  Velocity: " << bob2.velocity << std::endl
-    << "  Angle: " << bob2.angle << std::endl
-    << std::endl;
 }
 
 void DoublePendulum::draw(
